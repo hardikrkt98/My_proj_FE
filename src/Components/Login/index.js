@@ -2,7 +2,13 @@ import React from 'react';
 import { MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBInput, MDBBtn, MDBIcon, MDBModalFooter } from 'mdbreact';
 import 'mdbreact/dist/css/mdb.css'
 import {baseUrl} from "../../Constants/BackendEndpoints";
+import "mdbreact/dist/css/mdb.css";
+import Cookies from 'universal-cookie';
+
+
+
 import {makeHttpRequest} from '../../CommonMethods';
+import SocialPage from "../LoginFeed/LoginFeed";
 
 class FormPage extends React.PureComponent  {
 
@@ -10,7 +16,9 @@ class FormPage extends React.PureComponent  {
         super(props);
         this.state = {
             username:'',
-            password:''
+            password:'',
+            error:false,
+            errorMessage:'',
         }
     }
    updateEventstate = (event) =>{
@@ -22,18 +30,54 @@ class FormPage extends React.PureComponent  {
 
        console.log(this.state);
 
+       let payload ={
+           username:this.state.username,
+           password:this.state.password,
+       }
+
      const config = {
             url:"/user/login",
-            data:this.state,
+            data:payload,
             method: 'POST',
             hideLoader: false
         };
 
 
         makeHttpRequest(config).then(response=>{
-           console.log(response);
+
+            this.setState({
+                error:false,
+                errorMessage:''
+
+            })
+            const cookies = new Cookies();
+            console.log(response);
+
+            //Need to set expiry time for cookie
+            cookies.set("token",response.headers['jwt-token']);
+            cookies.set('userId',response.data.userId);
+            // console.log(this.props.history);
+            this.props.history.push('/userhome');
+
+           //console.log(response);
+
 
         })
+            .catch(error=>{
+                console.log(error);
+                this.setState({
+                    errorMessage:error.response.data.message,
+                    error:true,
+                })
+
+
+
+            })
+        {
+
+
+
+        }
 
     }
 
@@ -43,11 +87,16 @@ class FormPage extends React.PureComponent  {
 
     render() {
         return (
+          <div>
+              <div style={{position:"absolute",height :570,overflow:"auto",right:20}}>
+                  <SocialPage/>
+              </div>
+
             <MDBContainer>
                 <MDBRow>
-                    <MDBCol md="6">
+                    <MDBCol md="4">
                         <MDBCard>
-                            <MDBCardBody className="mx-4">
+                            <MDBCardBody className="mr-xl-n1">
                                 <div className="text-center">
                                     <h3 className="dark-grey-text mb-5">
                                         <strong>Sign in</strong>
@@ -78,13 +127,8 @@ class FormPage extends React.PureComponent  {
                                     value={this.state.password}
                                     onChange={this.updateEventstate}
                                 />
-                                <p className="font-small blue-text d-flex justify-content-end pb-3">
-                                    Forgot
-                                    <a href="#!" className="blue-text ml-1">
+                                <span  style={{ color: "red" }}>{this.state.errorMessage}</span>
 
-                                        Password?
-                                    </a>
-                                </p>
                                 <div className="text-center mb-3">
                                     <MDBBtn
                                         type="button"
@@ -107,10 +151,12 @@ class FormPage extends React.PureComponent  {
                                     </a>
                                 </p>
                             </MDBModalFooter>
+
                         </MDBCard>
                     </MDBCol>
                 </MDBRow>
             </MDBContainer>
+          </div>
         );
     }
 };

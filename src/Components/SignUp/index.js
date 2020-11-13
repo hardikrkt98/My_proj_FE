@@ -2,7 +2,7 @@ import React from 'react';
 import { MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBInput, MDBBtn, MDBIcon, MDBModalFooter } from 'mdbreact';
 import 'mdbreact/dist/css/mdb.css'
 import {makeHttpRequest} from "../../CommonMethods";
-
+import SocialPage from "../LoginFeed/LoginFeed";
  class SignUpPage extends  React.PureComponent{
 
      constructor(props) {
@@ -46,11 +46,15 @@ import {makeHttpRequest} from "../../CommonMethods";
 
      render() {
     return (
+        <div >
+            <div style={{position:"absolute",height :570,overflow:"auto",right:20}}>
+                <SocialPage/>
+            </div>
         <MDBContainer>
             <MDBRow>
                 <MDBCol md="6">
                     <MDBCard>
-                        <MDBCardBody className="mx-4">
+                        <MDBCardBody className="mx-2">
                             <div className="text-center">
                                 <h3 className="dark-grey-text mb-5">
                                     <strong>Sign Up</strong>
@@ -127,7 +131,8 @@ import {makeHttpRequest} from "../../CommonMethods";
                 </MDBCol>
             </MDBRow>
         </MDBContainer>
-    );
+        </div>
+            );
 }
 };
 
