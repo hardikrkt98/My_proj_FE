@@ -76,7 +76,7 @@ import SocialPage from "../LoginFeed/LoginFeed";
                             <MDBInput
                                 label="LastName"
                                 group
-                                type="password"
+                                type="text"
                                 validate
                                 containerClass="mb-0"
                                 id='lastName'
