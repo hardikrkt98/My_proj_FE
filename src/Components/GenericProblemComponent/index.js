@@ -13,23 +13,46 @@ import ListGroup from 'react-bootstrap/ListGroup'
 import {Navbar,Nav,NavDropdown,Form,FormControl,Button} from 'react-bootstrap'
 
 
-function onChange(newValue) {
-    console.log("change", newValue);
-}
 
-class GenericProblemPage extends  React.Component{
+
+class GenericProblemPage extends  React.Component{g
+
+
+
+
     constructor(props) {
         super(props);
 
 
         this.state  = {
 
-            problem: ""
+            problem: "",
+            consoleCode : ""
 
         }
 
 
     }
+
+    handleClick = (event) =>{
+        let initurl = this.state.problem.title;
+
+
+        let config = {
+            url :initurl +"/submit",
+            method:"POST",
+            data: {
+                code:this.state.consoleCode,
+                problemId:"1234"
+            }
+        };
+        makeHttpRequest(config).then(response=>{
+
+            console.log(response);
+
+        })
+
+    };
 
     componentDidMount() {
 
@@ -121,17 +144,16 @@ render() {
             })}
 
         </div>
-
-
-
-
-
-
-
-        <div><AceEditor
+        <div>
+            <AceEditor
             mode="java"
             theme="github"
-            onChange={onChange}
+            onChange={(newCode)=>{
+                console.log("hello");
+                this.setState({
+                    consoleCode:newCode
+                })
+            }}
             name="UNIQUE_ID_OF_DIV"
             editorProps={{ $blockScrolling: true }}
             setOptions={{
@@ -139,9 +161,15 @@ render() {
                 enableLiveAutocompletion: true,
                 enableSnippets: true
             }}
+            value={this.state.code}
         />,
 
         </div>
+            <div>
+                <Button variant="outline-success" onClick = {this.handleClick}>Submit</Button>{' '}
+
+            </div>
+
         </div>
 
     );
