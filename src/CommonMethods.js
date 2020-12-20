@@ -10,7 +10,7 @@ export const makeHttpRequest = config => {
     return axios
         .request({
             method: config.method || 'GET',
-            baseURL: 'http://localhost:8081/',
+            baseURL: 'http://codeitnow.me/',
             url: config.url,
             data: config.data,
             headers: config.headers ? config.headers : {},
