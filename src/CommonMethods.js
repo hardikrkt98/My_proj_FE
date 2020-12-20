@@ -11,7 +11,7 @@ export const makeHttpRequest = config => {
         .request({
             method: config.method || 'GET',
             baseURL: 'http://codeitnow.me/',
-            url: config.url,
+            url: '/api'+config.url,
             data: config.data,
             headers: config.headers ? config.headers : {},
             params: config.params,
