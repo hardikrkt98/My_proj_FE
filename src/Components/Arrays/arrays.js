@@ -9,6 +9,8 @@ import {arraysProblems, newsFeedUrl} from "../../Constants/BackendEndpoints";
 import {makeHttpRequest} from "../../CommonMethods";
 import {Link, NavLink, withRouter} from 'react-router-dom';
 import Button from '@material-ui/core/Button';
+import Cookies from 'universal-cookie';
+const cookie = new Cookies();
 
 
 
@@ -28,7 +30,11 @@ class Arrays extends React.Component{
 
     componentDidMount() {
         let  config = {
-            url : arraysProblems
+            url : arraysProblems,
+            headers: {
+                "Authorization":"Bearer "+cookie.get('token')
+
+            }
 
         }
         makeHttpRequest(config).then(

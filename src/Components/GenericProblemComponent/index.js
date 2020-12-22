@@ -11,6 +11,8 @@ import Jumbotron from 'react-bootstrap/Jumbotron'
 import Container from "react-bootstrap/Container";
 import ListGroup from 'react-bootstrap/ListGroup'
 import {Navbar,Nav,NavDropdown,Form,FormControl,Button} from 'react-bootstrap'
+import Cookies from 'universal-cookie';
+const cookie = new Cookies();
 
 
 
@@ -44,6 +46,10 @@ class GenericProblemPage extends  React.Component{g
             data: {
                 code:this.state.consoleCode,
                 problemId:"1234"
+            },
+            headers: {
+                "Authorization":"Bearer "+cookie.get('token')
+
             }
         };
         makeHttpRequest(config).then(response=>{
@@ -60,7 +66,10 @@ class GenericProblemPage extends  React.Component{g
 
         let  config = {
             url : '/problem/'+qprms ,
+            headers: {
+                "Authorization":"Bearer "+cookie.get('token')
 
+            }
 
 
         };
